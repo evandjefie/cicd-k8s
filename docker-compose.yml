@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  myjenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    image: evandjefie/jenkins:latest
+    container_name: cicd-jenkins
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    user: "0"
+    privileged: true
+    volumes:
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/terraform:/usr/bin/terraform
+      - ./jenkins:/var/jenkins_home
+      - ./jenkins-docker-certs:/certs/client:ro
+    networks:
+      - minikube
+
+networks:
+  minikube:
+    driver: bridge

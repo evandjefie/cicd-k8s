@@ -1,0 +1,44 @@
+FROM jenkins/jenkins:latest
+# FROM jenkins/jenkins:alpine3.18-jdk21
+# FROM jenkins/jenkins:jdk17
+
+LABEL maintainer="evandjefie"
+
+#Use it for installation
+USER root
+
+ENV DOCKER_HOST=tcp://docker:2376
+ENV DOCKER_CERT_PATH=/certs/client
+ENV DOCKER_TLS_VERIFY=1
+
+RUN apt update && apt install -y lsb-release python3-pip curl
+
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
+
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+
+RUN apt update && \
+    apt install docker-ce-cli -y
+
+# INSTALL KUBECTL
+RUN curl -LO https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl && \
+    chmod +x ./kubectl && \
+    mv ./kubectl /usr/local/bin/kubectl && \
+    kubectl version --client
+
+# INSTALL TERRAFORM
+RUN apt install software-properties-common gnupg2 -y && \
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
+    apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+    apt update && apt install terraform -y && \
+    terraform -v
+
+#Change 
+USER jenkins
+
+RUN jenkins-plugin-cli --plugins "docker-plugin"
+RUN jenkins-plugin-cli --plugins "kubernetes"
