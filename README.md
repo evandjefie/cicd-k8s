@@ -67,10 +67,9 @@ Connect to http://localhost:8081
   - in your app repository
   - or in your created job
 
-- Change value of environnement variables
 
 
-## 🔗 Follow me
+## Follow me
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://evandjefie.my.canva.site)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/evan-djefie)
 [![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/EvanDjefie)
